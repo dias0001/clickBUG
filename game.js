@@ -31,6 +31,7 @@ const posicElement = (el) => {
 const moveElemento = (el, veloc, inc) => {
     //executa a cada x milissegundos
     const anima = setInterval(() => {
+        
         veloc = veloc + inc
         el.style.left = veloc + 'px'
         //verifica se elemento saiu do quadro 
@@ -58,9 +59,14 @@ const clickBug = (el) => {
     el.classList.add('morto')
     //adiciona 10 pts ao score
     score += 10
+    //se o inseto clicado for bonzinho perde 50 pontos
+    if(el.classList.contains('bonzinho')){
+        score -= 60
+    }
     document.getElementById('score').innerText = score
     //Se velocidade for maior que 20, faz 100 pontos
-    if (el.getAttribute('velocidade') > 20) {
+    //apenas nos insetos que tenha a classe "invasor"
+    if (el.getAttribute('velocidade') > 20 && el.classList.contains('invasor')){
         score += 100
         // mostra +100 pontos após  1/2 segundo
         let pts100 = document.getElementById('pts100')
@@ -103,6 +109,21 @@ for (bom of bonzinhos){
     bom.addEventListener('mousedown', (e) => { clickBug(e.target) })
 
 }
+
+//contagem regressiva 
+setTimeout(() => {
+    //avisa ao usuário ofim do tempo
+    alert('tempo esgotado!!!')
+    //recarrega a página - semelhante
+    location.reload(true)     
+}, tempoRestante*1000);
+
+// a cada segundo mostra o tempo restante
+const mostratempo = setInterval(() => {
+    document.getElementById('infoTR').innerText = tempoRestante
+    document.getElementById('temporest').innerText = tempoRestante --
+
+}, 1000);
 
 
 
